@@ -1,0 +1,10 @@
+.venv
+.idea
+consoleGames/score.txt
+ __pycache__
+ __pycache__/
+ webGames/__pycache__/
+ consoleGames/__pycache__/
+ webGames/score.txt
+ score.txt
+ current_exchange_rate.txt

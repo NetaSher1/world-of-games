@@ -1,0 +1,91 @@
+/* General page styles */
+body {
+    font-family: 'Press Start 2P', cursive; /* Retro pixelated font */
+    background-color: #000; /* Dark background for arcade feel */
+    color: #fff;
+    margin: 0;
+    padding: 20px;
+    text-align: center; /* Center align text */
+}
+
+/* Import Google Font for pixelated text */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* Header styles */
+h1 {
+    font-size: 40px;
+    color: #ffcc00; /* Classic arcade yellow */
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 0 #ff0000; /* Retro text shadow */
+}
+
+/* Subheader styles */
+h3 {
+    font-size: 24px;
+    color: #00ff00; /* Neon green */
+    margin-bottom: 20px;
+}
+
+/* Form styles */
+.game-form {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #222; /* Dark form background */
+    border: 5px solid #ff00ff; /* Bright pink border */
+    border-radius: 10px;
+    display: inline-block; /* Inline block to center align */
+    text-align: left; /* Left align form elements */
+}
+
+/* Input styles */
+.form-input {
+    margin: 10px 0;
+    padding: 10px;
+    border: 2px solid #00ff00; /* Neon green border */
+    border-radius: 5px;
+    background-color: #444; /* Slightly lighter dark background */
+    color: #fff;
+    font-size: 16px;
+    width: 93%; /* Full width */
+    text-align: center;
+}
+
+/* Button styles */
+.form-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #00ff00; /* Neon green background */
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.7);
+    cursor: pointer;
+    display: block;
+    margin: 20px auto 0 auto; /* Center the button */
+}
+
+.form-button:hover {
+    background-color: #ffcc00; /* Yellow background on hover */
+}
+
+/* Message styles */
+h2 {
+    font-size: 24px;
+    color: #ffcc00; /* Classic arcade yellow */
+    text-shadow: 2px 2px 0 #ff0000; /* Retro text shadow */
+    margin-bottom: 20px;
+}
+
+/* Link styles */
+a {
+    display: block;
+    margin: 10px 0;
+    font-size: 20px;
+    color: #00ff00; /* Neon green */
+    text-decoration: none;
+    text-shadow: 1px 1px 0 #000; /* Retro text shadow */
+}
+
+a:hover {
+    color: #ffcc00; /* Yellow on hover */
+}

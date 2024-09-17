@@ -1,0 +1,48 @@
+{% extends "base_template.html" %}
+
+{% block title %}Memory Game{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="./static/memory_game.css">
+{% endblock %}
+
+{% block content %}
+    <h1 class="title">Memory Game</h1>
+    <h3 class="score">Current Score: {{ score }}</h3>
+    {% if not message %}
+    <div class="container">
+        <h4 id="sequence" class="sequence">{{ generated_sequence }}</h4>
+        <button id="changeButton" onclick="showAndChangeText()">Click Me</button>
+    </div>
+
+    <form action="/memoryGame" method="post" class="game-form">
+        {% for i in range(difficulty) %}
+        <input type="number" id="user_guess{{i}}" name="user_guess{{i}}" min="1" max="100" class="form-input">
+        {% endfor %}
+        <button type="submit" class="form-button">Submit Guess</button>
+    </form>
+
+    <script>
+        function showAndChangeText() {
+            const sequenceElement = document.querySelector('#sequence');
+            const buttonElement = document.querySelector('#changeButton');
+
+            // Show the #sequence element
+            sequenceElement.style.visibility = 'visible';
+
+            // Set a timeout to change the text content to "Did You Get It?" after 2 seconds
+            setTimeout(() => {
+                sequenceElement.textContent = "Did You Get It?";
+            }, 700);
+
+            // Hide the button after it is clicked
+            buttonElement.style.display = 'none';
+        }
+    </script>
+
+    {% else %}
+    <h2 class="message">{{ message }}</h2>
+    <a href="/memoryGame" class="link">Play Again</a>
+    <a href="/scores" class="link">Scores</a>
+    {% endif %}
+{% endblock %}

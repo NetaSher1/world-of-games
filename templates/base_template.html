@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Page Title{% endblock %}</title>
+    <style>
+        /* Import Google Font for pixelated text */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        /* General page styles */
+        body {
+            font-family: 'Press Start 2P', cursive; /* Retro pixelated font */
+            background-color: #000; /* Dark background for arcade feel */
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            text-align: center; /* Center align text */
+        }
+
+        /* Header styles */
+        header {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: #ffcc00; /* Classic arcade yellow */
+            text-shadow: 2px 2px 0 #ff0000; /* Retro text shadow */
+            text-decoration: none;
+        }
+
+        /* Main content area */
+        main {
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        /* Link styles */
+        a {
+            display: block;
+            margin: 10px 0;
+            font-size: 20px;
+            color: #00ff00; /* Neon green */
+            text-decoration: none;
+            text-shadow: 1px 1px 0 #000; /* Retro text shadow */
+        }
+
+        a:hover {
+            color: #ffcc00; /* Yellow on hover */
+        }
+    </style>
+     {% block extra_css %}
+    <!-- Additional CSS files go here -->
+    {% endblock %}
+</head>
+<body>
+    <header>
+        <a href="/reset" class="logo">WOG</a>
+    </header>
+    <main>
+        {% block content %}
+        <!-- Content goes here -->
+        {% endblock %}
+    </main>
+</body>
+</html>

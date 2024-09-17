@@ -1,0 +1,108 @@
+/* General page styles */
+body {
+    font-family: 'Press Start 2P', cursive; /* Retro pixelated font */
+    background-color: #000; /* Dark background for arcade feel */
+    color: #fff;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Import Google Font for pixelated text */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* Header styles */
+#main_title {
+    text-align: center;
+    padding-top: 15px;
+    font-size: 60px;
+    color: #ffcc00; /* Classic arcade yellow */
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 0 #ff0000; /* Retro text shadow */
+}
+
+/* Game scores container */
+.all_games {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+/* Individual game scores block */
+.game_scores {
+    background-color: #222; /* Dark background for game blocks */
+    border: 5px solid #ff00ff; /* Bright pink border */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.7);
+    width: 358px; /* Increased width for wider blocks */
+    padding: 20px;
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Game scores header */
+.game_scores h2 {
+    font-size: 24px;
+    color: #00ff00; /* Classic arcade green */
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 0 #000; /* Retro text shadow */
+}
+
+/* Info card container */
+#info_card {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between player info sections */
+}
+
+/* Player information container */
+#player_info {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+/* Individual player item */
+#player_info h3 {
+    background-color: #444; /* Slightly lighter dark background */
+    border: 2px solid #00ff00; /* Neon green border */
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.7);
+    margin: 0;
+    color: #fff;
+    font-size: 12px;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .all_games {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #player_info {
+        flex-direction: column; /* Stack items vertically on small screens */
+        align-items: flex-start;
+    }
+
+    #player_info h3 {
+        font-size: 12px; /* Adjust font size on smaller screens */
+    }
+}
+
+.error_message{
+    color: red;
+    text-align: center;
+    margin: 8% 14%;
+    font-size: 60px;
+    font-family: cursive !important;
+    }

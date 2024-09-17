@@ -1,0 +1,36 @@
+{% extends "base_template.html" %}
+
+{% block title %}Scores{% endblock %}
+
+{% block extra_css %}
+   <link rel="stylesheet" href="/static/scores.css">
+{% endblock %}
+
+
+{% block content %}
+     {% if message %}
+            <h1 class="error_message">WOOPS, <br>No Scores Here Yet <br>{{ message }}</br></h1>
+        {% else %}
+    <div class="header">
+<h1 id="main_title">WOG Score Board</h1>
+</div>
+     <div class="all_games">
+{% for game, details in scores.items() %}
+    <div class="game_scores">
+    <h2>{{ game }}</h2>
+        <div id="info_card">
+
+    {% for player in details['players'] %}
+            <div id="player_info">
+        <h3>{{ player['username'] }}</h3>
+        <h3 id="score">Score:{{ player['score'] }}</h3>
+        <h3>{{ player['last_session']}}</h3>
+            </div>
+    {% endfor %}
+
+            </div>
+        </div>
+{% endfor %}
+      {% endif %}
+    </div>
+{% endblock %}}

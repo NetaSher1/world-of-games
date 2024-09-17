@@ -1,0 +1,22 @@
+{% extends "base_template.html" %}
+
+{% block title %}Currency Roulette{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="./static/Currency_Roulette.css">
+{% endblock %}
+
+{% block content %}
+<h1>Currency Roulette</h1>
+{% if not message %}
+<h3>How much are {{ value_to_guess }} NIS in USD?</h3>
+<form action="/currencyRoulette" method="post" class="game-form">
+    <input type="number" id="user_guess" name="user_guess" class="form-input" required>
+    <button type="submit" class="form-button">Submit Guess</button>
+</form>
+{% else %}
+    {{ message }} <br>
+    <a href="/currencyRoulette">Play Again</a>
+    <a href="/scores">Scores</a>
+{% endif %}
+{% endblock %}

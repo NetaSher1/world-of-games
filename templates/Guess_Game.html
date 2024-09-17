@@ -1,0 +1,28 @@
+{% extends "base_template.html" %}
+
+{% block title %}Guessing Game{% endblock %}
+
+{% block extra_css %}
+ <link rel="stylesheet" href="./static/guessingGame.css">
+{% endblock %}
+
+
+
+{% block content %}
+    <h1>Guessing Game</h1>
+    <p>Your current score: {{ score }}</p>
+    {% if not message %}
+        <h2>Guess a number between 1 and {{ difficulty * 2 }}</h2>
+        <form action="/guessingGame" method="post">
+            <label for="guess">Your Guess: </label>
+            <input type="number" id="guess" name="guess" required>
+            <button type="submit">Submit Guess</button>
+        </form>
+    {% endif %}
+
+    {% if message %}
+        <h2>{{ message }}</h2>
+        <a href="/guessingGame">Play Again</a>
+        <a href="/scores">Scores</a>
+    {% endif %}
+{% endblock %}}

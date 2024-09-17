@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WOG</title>
+    <link rel="stylesheet" href="/static/main.css">
+</head>
+<body>
+    <h1>WELCOME TO THE WORLD OF GAMES</h1>
+    {% if not session.get('user_name') %}
+    <form action="/" method="post">
+        <div class="form-section">
+            <div class="input-group">
+                <label for="user_name">Your Name: </label>
+                <input type="text" id="user_name" name="user_name" required>
+            </div>
+            <div class="input-group">
+                <label>Difficulty: </label>
+                <div class="radio-group">
+                    {% for num in range(1, 6) %}
+                        <input type="radio" id="difficulty{{ num }}" name="difficulty" value="{{ num }}">
+                        <label for="difficulty{{ num }}">{{ num }}</label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="form-section">
+            <button id="submit-button" type="submit">Submit</button>
+        </div>
+    </form>
+    {% else %}
+    <h1> Choose Your Game {{session.user_name}}</h1>
+    <div class="games_div">
+        <div class="game">
+            <a href="/guessingGame"><img class="game_icn" src="/static/images/riddler.png" alt="Guessing Game"></a>
+            <a href="/guessingGame">Guessing Game</a>
+        </div>
+        <div class="game">
+            <a href="/memoryGame"><img class="game_icn" src="/static/images/brain.png" alt="Memory Game"></a>
+            <a href="/memoryGame">Memory Game</a>
+        </div>
+        <div class="game">
+            <a href="/currencyRoulette_load"><img class="game_icn" src="/static/images/currency.png" alt="Currency Roulette"></a>
+            <a href="/currencyRoulette_load">Currency Roulette</a>
+        </div>
+    </div>
+  <a href="/scores/" id="scoreBtn">scores</a>
+    {% endif %}
+
+</body>
+</html>

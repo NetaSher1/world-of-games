@@ -1,0 +1,30 @@
+{
+    "games": {
+        "Memory Game": {
+            "players": [
+                {
+                    "username": "Neta",
+                    "score": 16,
+                    "last_session": "2024-09-13"
+                }
+            ]
+        },
+        "Guess Game": {
+            "players": [
+                {
+                    "username": "Neta",
+                    "score": 16,
+                    "last_session": "2024-09-13"
+                },
+                {
+                    "username": "Neta",
+                    "score": 56,
+                    "last_session": "2024-09-13"
+                }
+            ]
+        },
+        "Currency Roulette": {
+            "players": []
+        }
+    }
+}

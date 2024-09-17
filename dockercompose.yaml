@@ -1,0 +1,10 @@
+version: "3"
+services:
+  - world_of_games:
+      build:
+        context: .
+      ports:
+        - 5000:5000
+      container_name: wog
+
+
