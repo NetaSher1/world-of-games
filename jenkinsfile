@@ -27,6 +27,8 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         // Run the Docker container with port mapping and volume mounting
+                        echo "Docker User: ${DOCKER_USER}"
+                        echo "Image Tag: ${imageTag}"
                         bat '''
                             docker run -d --name scores_app -p 8777:8777 ${DOCKER_USER}/world-of-games:lts
                         '''
