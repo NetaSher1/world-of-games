@@ -14,16 +14,18 @@ pipeline {
             }
         }
 
-        stage('Build') {
-    steps {
-        echo 'Building Docker image...'
-        script {
-            def imageTag = "${env.DOCKER_USER}/world-of-games:lts" // Use a generic tag like 'lts'
-            echo "Image Tag: ${imageTag}" // Print the image tag for debugging
-            bat "docker build -t ${imageTag} ."
+         stage('Build') {
+            steps {
+                echo 'Building Docker image...'
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        def imageTag = "${DOCKER_USER}/world-of-games:lts" // Use a generic tag like 'lts'
+                        echo "Image Tag: ${imageTag}" // Print the image tag for debugging
+                        bat "docker build -t ${imageTag} ."
+                    }
+                }
+            }
         }
-    }
-}
 
         stage('Run') {
             steps {
