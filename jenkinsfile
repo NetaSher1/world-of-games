@@ -18,7 +18,7 @@ pipeline {
     steps {
         echo 'Building Docker image...'
         script {
-            def imageTag = "${env.DOCKER_USER}/world-of-games:${env.BUILD_NUMBER}"
+            def imageTag = "${env.DOCKER_USER}/world-of-games:lts" // Use a generic tag like 'lts'
             echo "Image Tag: ${imageTag}" // Print the image tag for debugging
             bat "docker build -t ${imageTag} ."
         }
