@@ -30,7 +30,7 @@ pipeline {
                         def imageTag = "${DOCKER_USER}/world-of-games:lts" // Ensure the imageTag is defined here as well
                         echo "Image Tag for running: ${imageTag}" // Debug print
                         bat '''
-                            docker run -d --name scores_app -p 8777:8777 ${DOCKER_USER}/world-of-games:lts
+                            docker run -d --name scores_app -p 8777:8777 netasher/world-of-games:lts
                         '''
                     }
                 }
