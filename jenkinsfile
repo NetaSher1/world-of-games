@@ -1,32 +1,81 @@
 pipeline {
-    agent { label 'my-laptop' }
+    agent { label 'my-laptop' } // Adjust the agent label if needed
+
+    environment {
+        DOCKER_USER = credentials('dockerhub-credentials') // Use credentials for both build and push
+        DOCKER_PASS = credentials('dockerhub-credentials')
+    }
 
     stages {
-        stage('Start App') {
+        stage('Checkout') {
             steps {
-                echo 'Starting Flask app...'
-                bat '''
-                    cd C:\\Users\\P0031467\\PycharmProjects\\world-of-games
-                    call .venv\\Scripts\\activate.bat
-                    start python app.py
-                '''
+                echo 'Checking out the repository...'
+                checkout scm // Clone the repository
             }
         }
 
-         stage('Test') {
+        stage('Build') {
+            steps {
+                echo 'Building Docker image...'
+                script {
+                    def imageTag = "${env.DOCKER_USER}/world-of-games:${env.BUILD_NUMBER}"
+                    bat '''
+                        docker build -t ${imageTag} .
+                    '''
+                }
+            }
+        }
+
+        stage('Run') {
+            steps {
+                echo 'Running the Dockerized application...'
+                script {
+                    // Run the Docker container with port mapping and volume mounting
+                    bat '''
+                        docker run -d --name scores_app -p 8777:8777 -v ${WORKSPACE}\\Scores.txt:/app/Scores.txt ${DOCKER_USER}/world-of-games:${BUILD_NUMBER}
+                    '''
+                }
+            }
+        }
+
+        stage('Test') {
             steps {
                 echo 'Running Selenium tests...'
                 script {
                     def exitCode = bat(script: '''
-                        cd C:\\Users\\P0031467\\PycharmProjects\\world-of-games\\tests
-                        start python e2e.py"
+                        python tests/e2e.py
                     ''', returnStatus: true)
 
                     if (exitCode == 0) {
-                        echo "Selenium tests passed"
+                        echo "Tests passed"
                     } else {
-                        error "Selenium tests failed with exit code ${exitCode}"
+                        error "Tests failed with exit code ${exitCode}"
                     }
+                }
+            }
+        }
+
+        stage('Finalize') {
+            steps {
+                echo 'Finalizing...'
+                script {
+                    // Stop and remove the container
+                    bat '''
+                        docker stop scores_app
+                        docker rm scores_app
+                    '''
+                }
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                echo 'Pushing Docker image to Docker Hub...'
+                script {
+                    bat '''
+                        docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+                        docker push ${DOCKER_USER}/world-of-games:${BUILD_NUMBER}
+                    '''
                 }
             }
         }
@@ -40,7 +89,10 @@ pipeline {
         }
         always {
             echo 'Cleaning up...'
-            bat 'taskkill /IM python.exe /F' // Kill Flask app in Windows after completion
+            bat '''
+                docker stop scores_app || exit 0
+                docker rm scores_app || exit 0
+            ''' // Ensure the container is stopped and removed
         }
     }
 }
