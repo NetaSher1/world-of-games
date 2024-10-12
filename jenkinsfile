@@ -15,16 +15,14 @@ pipeline {
         }
 
         stage('Build') {
-            steps {
-                echo 'Building Docker image...'
-                script {
-                    def imageTag = "${env.DOCKER_USER}/world-of-games:${env.BUILD_NUMBER}"
-                    bat '''
-                        docker build -t ${imageTag} .
-                    '''
-                }
-            }
+    steps {
+        echo 'Building Docker image...'
+        script {
+            def imageTag = "${env.DOCKER_USER}/world-of-games:${env.BUILD_NUMBER}"
+            bat "docker build -t ${imageTag} ." // Use double quotes to allow variable expansion
         }
+    }
+}
 
         stage('Run') {
             steps {
