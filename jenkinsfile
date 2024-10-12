@@ -42,7 +42,7 @@ pipeline {
                 echo 'Running Selenium tests inside the container...'
                 script {
                     def exitCode = bat(script: '''
-                        docker exec scores_app python ./tests/e2e.py
+                        docker exec scores_app sh -c "cd tests && python e2e.py"
                     ''', returnStatus: true)
 
                     if (exitCode == 0) {
