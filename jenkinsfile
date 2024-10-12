@@ -79,7 +79,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         bat '''
                             docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
-                            docker push ${DOCKER_USER}/world-of-games:lts
+                            docker push netasher/world-of-games:lts
                         '''
                     }
                 }
