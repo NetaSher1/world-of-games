@@ -29,7 +29,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         // Run the Docker container with port mapping and volume mounting
                         bat '''
-                            docker run -d --name scores_app -p 8777:8777 -v ${WORKSPACE}\\Scores.txt:/app/Scores.txt ${DOCKER_USER}/world-of-games:lts
+                            docker run -d --name scores_app -p 8777:8777 -v ${WORKSPACE}/Scores.txt:/app/Scores.txt ${DOCKER_USER}/world-of-games:lts
                         '''
                     }
                 }
