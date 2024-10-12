@@ -1,4 +1,5 @@
 #import subprocess
+import json
 import sys
 #from selenium import webdriver
 #from selenium.webdriver.common.by import By
@@ -10,7 +11,11 @@ def test_scores_service(url):
     if not check_file:
         return False
     else:
-        return True
+        with open("../webGames/score.txt", "r") as scorefile:
+            scorefile_data = json.loads(scorefile.read())
+            scores = [player['score'] for game in scorefile_data['games'].values() for player in game['players']]
+            are_scores_valid = all(1 <= score <= 1000 for score in scores)
+            return are_scores_valid
     # else:
     #     driver = webdriver.Chrome()
     #     driver.get(url)
@@ -30,4 +35,6 @@ def main():
         return sys.exit(0)
     else:
         return sys.exit(-1)
-main()
+print(main())
+
+
