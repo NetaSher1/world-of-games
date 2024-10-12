@@ -19,7 +19,8 @@ pipeline {
         echo 'Building Docker image...'
         script {
             def imageTag = "${env.DOCKER_USER}/world-of-games:${env.BUILD_NUMBER}"
-            bat "docker build -t ${imageTag} ." // Use double quotes to allow variable expansion
+            echo "Image Tag: ${imageTag}" // Print the image tag for debugging
+            bat "docker build -t ${imageTag} ."
         }
     }
 }
