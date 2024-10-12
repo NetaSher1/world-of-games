@@ -1,11 +1,6 @@
 pipeline {
     agent { label 'my-laptop' } // Adjust the agent label if needed
 
-    environment {
-        DOCKER_USER = credentials('dockerhub-credentials') // Use credentials for both build and push
-        DOCKER_PASS = credentials('dockerhub-credentials')
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -14,7 +9,7 @@ pipeline {
             }
         }
 
-         stage('Build') {
+        stage('Build') {
             steps {
                 echo 'Building Docker image...'
                 script {
@@ -31,10 +26,12 @@ pipeline {
             steps {
                 echo 'Running the Dockerized application...'
                 script {
-                    // Run the Docker container with port mapping and volume mounting
-                    bat '''
-                        docker run -d --name scores_app -p 8777:8777 -v ${WORKSPACE}\\Scores.txt:/app/Scores.txt ${DOCKER_USER}/world-of-games:${BUILD_NUMBER}
-                    '''
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        // Run the Docker container with port mapping and volume mounting
+                        bat '''
+                            docker run -d --name scores_app -p 8777:8777 -v ${WORKSPACE}\\Scores.txt:/app/Scores.txt ${DOCKER_USER}/world-of-games:lts
+                        '''
+                    }
                 }
             }
         }
@@ -73,10 +70,12 @@ pipeline {
             steps {
                 echo 'Pushing Docker image to Docker Hub...'
                 script {
-                    bat '''
-                        docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
-                        docker push ${DOCKER_USER}/world-of-games:${BUILD_NUMBER}
-                    '''
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        bat '''
+                            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+                            docker push ${DOCKER_USER}/world-of-games:lts
+                        '''
+                    }
                 }
             }
         }
