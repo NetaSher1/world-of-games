@@ -15,6 +15,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         def imageTag = "${DOCKER_USER}/world-of-games:lts" // Use a generic tag like 'lts'
+                        echo "Using image tag: ${imageTag}" // Debug print
                         bat "docker build -t ${imageTag} ."
                     }
                 }
@@ -26,10 +27,10 @@ pipeline {
                 echo 'Running the Dockerized application...'
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        // Run the Docker container with port mapping and volume mounting
-                        echo "Image Tag: ${imageTag}"
+                        def imageTag = "${DOCKER_USER}/world-of-games:lts" // Ensure the imageTag is defined here as well
+                        echo "Image Tag for running: ${imageTag}" // Debug print
                         bat '''
-                            docker run -d --name scores_app -p 8777:8777 netasher/world-of-games:lts
+                            docker run -d --name scores_app -p 8777:8777 ${DOCKER_USER}/world-of-games:lts
                         '''
                     }
                 }
@@ -59,8 +60,8 @@ pipeline {
                 script {
                     // Stop and remove the container
                     bat '''
-                        docker stop scores_app
-                        docker rm scores_app
+                        docker stop scores_app || exit 0
+                        docker rm scores_app || exit 0
                     '''
                 }
             }
@@ -71,6 +72,7 @@ pipeline {
                 echo 'Pushing Docker image to Docker Hub...'
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        echo "Docker user: ${DOCKER_USER}" // Debug print for user
                         bat '''
                             docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
                             docker push ${DOCKER_USER}/world-of-games:lts
