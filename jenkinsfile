@@ -14,8 +14,7 @@ pipeline {
                 echo 'Building Docker image...'
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        def imageTag = "${DOCKER_USER}/world-of-games:lts" // Use a generic tag like 'lts'
-                        echo "Using image tag: ${imageTag}" // Debug print
+                        def imageTag = "${DOCKER_USER}/world-of-games:lts" // Use a generic tag
                         bat "docker build -t ${imageTag} ."
                     }
                 }
@@ -27,12 +26,12 @@ pipeline {
                 echo 'Running the Dockerized application...'
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        def imageTag = "${DOCKER_USER}/world-of-games:lts" // Ensure the imageTag is defined here as well
-                        echo "Image Tag for running: ${imageTag}" // Debug print
-                        echo "workspace: ${env.WORKSPACE}"
-                        bat '''
-                            docker run -d --name scores_app -p 8777:8777 -v ${env.WORKSPACE}:/app netasher/world-of-games:lts
-                        '''
+                        def imageTag = "${DOCKER_USER}/world-of-games:lts" // Use a generic tag
+
+                        echo "Running Docker container with image tag: ${imageTag}" // Debug print
+                        
+                        // Run the Docker container in detached mode
+                        bat "docker run -d --name scores_app -p 8777:8777 ${imageTag}"
                     }
                 }
             }
@@ -40,10 +39,10 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Running Selenium tests...'
+                echo 'Running Selenium tests inside the container...'
                 script {
                     def exitCode = bat(script: '''
-                        python tests/e2e.py
+                        docker exec scores_app python tests/e2e.py
                     ''', returnStatus: true)
 
                     if (exitCode == 0) {
@@ -59,11 +58,16 @@ pipeline {
             steps {
                 echo 'Finalizing...'
                 script {
-                    // Stop and remove the container
-                    bat '''
-                        docker stop scores_app || exit 0
-                        docker rm scores_app || exit 0
-                    '''
+                    // Check if the container exists before stopping/removing
+                    def containerExists = bat(script: 'docker ps -a --filter "name=scores_app" -q', returnStdout: true).trim()
+                    if (containerExists) {
+                        bat '''
+                            docker stop scores_app || exit 0
+                            docker rm scores_app || exit 0
+                        '''
+                    } else {
+                        echo "Container 'scores_app' does not exist. Skipping stop/remove."
+                    }
                 }
             }
         }
@@ -73,7 +77,6 @@ pipeline {
                 echo 'Pushing Docker image to Docker Hub...'
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        echo "Docker user: ${DOCKER_USER}" // Debug print for user
                         bat '''
                             docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
                             docker push ${DOCKER_USER}/world-of-games:lts
